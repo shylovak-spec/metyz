@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Критерії для стікерів Bar-Code</title>
+    <title>Контроль якості метизів та дюбелів</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -12,33 +12,45 @@
 </head>
 <body class="p-4 max-w-md mx-auto min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER -->
     <div>
-        <header class="flex justify-between items-center mb-6 pt-2">
-            <div>
-                <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Контроль Якості</span>
-                <h1 class="text-xl font-bold text-gray-900">Критерії стікерів Bar-Code</h1>
-            </div>
-            <button onclick="resetAll()" class="text-xs bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg font-medium active:scale-95 transition">
-                🔄 Скинути
-            </button>
+        <!-- HEADER -->
+        <header class="mb-6 pt-2 text-center">
+            <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Термінал ОТК</span>
+            <h1 class="text-xl font-bold text-gray-900 mt-0.5">Критерії якості метизів/дюбелів</h1>
+            <p class="text-xs text-gray-500 mt-1">Оберіть зону/елемент та дефект для перевірки</p>
         </header>
 
         <!-- STEP 1: ZONE SELECTOR -->
         <div class="mb-6">
-            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Крок 1. Оберіть зону на стікері</label>
-            <div class="grid grid-cols-3 gap-2">
-                <button id="btn-zone-barcode" onclick="selectZone('barcode')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95 flex flex-col items-center justify-center">
-                    <div class="text-2xl mb-1">📊</div>
-                    <div class="font-bold text-xs leading-tight">Зона Штрих-коду</div>
+            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Крок 1. Оберіть зону або елемент</label>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="btn-zone-thread" onclick="selectZone('thread')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95">
+                    <div class="text-xl mb-1">🔩</div>
+                    <div class="font-bold text-xs">Зона різьби</div>
                 </button>
-                <button id="btn-zone-text" onclick="selectZone('text')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95 flex flex-col items-center justify-center">
-                    <div class="text-2xl mb-1">📄</div>
-                    <div class="font-bold text-xs leading-tight">Зона тексту</div>
+                <button id="btn-zone-head" onclick="selectZone('head')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95">
+                    <div class="text-xl mb-1">🪙</div>
+                    <div class="font-bold text-xs">Зона головки</div>
                 </button>
-                <button id="btn-zone-white" onclick="selectZone('white')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95 flex flex-col items-center justify-center">
-                    <div class="text-2xl mb-1">⬜</div>
-                    <div class="font-bold text-xs leading-tight">"Біла" зона</div>
+                <button id="btn-zone-slot" onclick="selectZone('slot')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95">
+                    <div class="text-xl mb-1">➕</div>
+                    <div class="font-bold text-xs">Зона шліцу</div>
+                </button>
+                <button id="btn-zone-dowel" onclick="selectZone('dowel')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95">
+                    <div class="text-xl mb-1">🧱</div>
+                    <div class="font-bold text-xs">Дюбель</div>
+                </button>
+                <button id="btn-zone-tape" onclick="selectZone('tape')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95">
+                    <div class="text-xl mb-1">🎞️</div>
+                    <div class="font-bold text-xs">Скотч</div>
+                </button>
+                <button id="btn-zone-anchor" onclick="selectZone('anchor')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95">
+                    <div class="text-xl mb-1">⚓</div>
+                    <div class="font-bold text-xs">Анкер</div>
+                </button>
+                <button id="btn-zone-brass" onclick="selectZone('brass')" class="zone-btn border-2 border-dashed border-gray-300 bg-white p-3 rounded-xl text-center transition-all active:scale-95 col-span-2">
+                    <div class="text-xl mb-1">🟡</div>
+                    <div class="font-bold text-xs">Дюбель, латунь</div>
                 </button>
             </div>
         </div>
@@ -46,73 +58,77 @@
         <!-- STEP 2: DEFECT SELECTOR -->
         <div id="step-defects" class="mb-6 opacity-40 pointer-events-none transition-all duration-300">
             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Крок 2. Який дефект виявили?</label>
-            <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+            <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
                 <button onclick="checkDefect(1)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">1. Сторонні включення (ворс, в т.ч. і кольоровий)</span>
+                    <span class="text-xs font-medium text-gray-800">1. Тріщини</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(2)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">2. Сторонні включення (вкраплення, плями)</span>
+                    <span class="text-xs font-medium text-gray-800">2. Жовтий колір метизу</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(3)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">3. Сторонні включення (кольорові вкраплення: червоні, сині, зелені тощо)</span>
+                    <span class="text-xs font-medium text-gray-800">3. Розводи</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(4)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">4. Повна або часткова відсутність ламінаційного шару</span>
+                    <span class="text-xs font-medium text-gray-800">4. Невідповідність по розмірам</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(5)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">5. Розшарування / пошкодження / здуття ламінаційного шару</span>
+                    <span class="text-xs font-medium text-gray-800">5. Дефект покриття (білі, чорні плями)</span>
+                    <span class="text-gray-400">❯</span>
+                </button>
+                <button onclick="checkDefect(51)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
+                    <span class="text-xs font-medium text-gray-800">5.1. Дефект покриття (відшарування)</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(6)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">6. Сліди від поліграфічних валиків</span>
+                    <span class="text-xs font-medium text-gray-800">6. Забруднення</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(7)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">7. Задвоєння друкованих елементів</span>
-                    <span class="text-gray-400">❯</span>
-                </button>
-                <button onclick="checkDefect(8)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">8. Нечіткий друк</span>
+                    <span class="text-xs font-medium text-gray-800">7. Іржа</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(9)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">9. Зміщення друку</span>
+                    <span class="text-xs font-medium text-gray-800">9. Пошкоджена різьба</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(10)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">10. Відсутність порізки</span>
+                    <span class="text-xs font-medium text-gray-800">10. Раковини</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(11)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">11. Кольорові плями / Сліди від кольорової фарби</span>
+                    <span class="text-xs font-medium text-gray-800">11. Відсутність різьби</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(12)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">12. Механічне пошкодження / Деформація стікеру</span>
+                    <span class="text-xs font-medium text-gray-800">12. Різновідтінковість метизів</span>
+                    <span class="text-gray-400">❯</span>
+                </button>
+                <button onclick="checkDefect(100)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
+                    <span class="text-xs font-medium text-gray-800">Сколи</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(13)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">13. Невідповідність розмірів відносно шаблону</span>
+                    <span class="text-xs font-medium text-gray-800">13. Облой пластику</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(14)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">14. Нерівномірна вирубка</span>
+                    <span class="text-xs font-medium text-gray-800">14. Деформація</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(15)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">15. Розпливчастий або розмазаний друк</span>
+                    <span class="text-xs font-medium text-gray-800">15. Недолив</span>
                     <span class="text-gray-400">❯</span>
                 </button>
                 <button onclick="checkDefect(16)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">16. Непрофарбування</span>
+                    <span class="text-xs font-medium text-gray-800">16. Пошкоджений шліц метизу</span>
                     <span class="text-gray-400">❯</span>
                 </button>
-                <button onclick="checkDefect(17)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">17. Сірий відтінок матеріалу</span>
+                <button onclick="checkDefect(200)" class="defect-btn w-full bg-white p-3 rounded-xl text-left border border-gray-200 flex items-center justify-between shadow-sm active:bg-gray-50">
+                    <span class="text-xs font-medium text-gray-800">Візуальна розмірна відмінність (Комбінаторика)</span>
                     <span class="text-gray-400">❯</span>
                 </button>
             </div>
@@ -124,71 +140,60 @@
 
     <!-- FOOTER -->
     <div class="text-center py-4 border-t border-gray-200 mt-6">
-        <p class="text-[11px] text-gray-400">Стандарт якості ОТК v1.0 • Таблиця 2 Bar-Code</p>
+        <p class="text-[11px] text-gray-400">Стандарт якості ОТК • Метизи та дюбелі</p>
     </div>
 
     <script>
         let selectedZone = null;
 
-        const notAllowedObj = { status: 'bad', title: 'НЕ ДОПУСКАЄТЬСЯ', desc: 'Дефект у даній зоні є критичним та не допускається.' };
+        const notAllowed = { status: 'bad', title: 'НЕ ДОПУСКАЄТЬСЯ', desc: 'Дефект у даній зоні/елементі не допускається.' };
+        const notApplicable = { status: 'none', title: 'НЕ ХАРАКТЕРНО / НЕ ЗУСТРІЧАЛОСЬ', desc: 'Даний дефект не зустрічається або не характерний для цієї зони.' };
+        const allowUnlimited = { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Допускається не обмежено.' };
+        const allowMountingSet = { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається тільки для комплектуючих, які використовують при формуванні монтажного комплекту.' };
 
         const db = {
-            1: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається некольоровий ворс ≤ 1 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо не заважає читанню.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '• 2 шт. ≤ 2 мм.\n• 3 шт. ≤ 1 мм.' }
+            1: { thread: notAllowed, head: notAllowed, slot: notAllowed, dowel: notAllowed, tape: notAllowed, anchor: notAllowed, brass: notAllowed },
+            2: { thread: notAllowed, head: notAllowed, slot: notAllowed, dowel: notApplicable, tape: notApplicable, anchor: notAllowed, brass: notAllowed },
+            3: { thread: allowUnlimited, head: allowUnlimited, slot: allowUnlimited, dowel: allowUnlimited, tape: allowUnlimited, anchor: allowUnlimited, brass: allowUnlimited },
+            4: { thread: allowMountingSet, head: allowMountingSet, slot: allowMountingSet, dowel: allowMountingSet, tape: allowMountingSet, anchor: allowMountingSet, brass: allowMountingSet },
+            5: { thread: allowMountingSet, head: allowMountingSet, slot: allowMountingSet, dowel: allowMountingSet, tape: allowMountingSet, anchor: allowMountingSet, brass: allowMountingSet },
+            51: {
+                thread: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається лише для комплектуючих, що використовуються при складанні.' },
+                head: notAllowed,
+                slot: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається у внутрішній частині. Див. презентацію.' },
+                dowel: notApplicable, tape: notApplicable,
+                anchor: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається у внутрішній частині. Див. презентацію.' },
+                brass: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається у внутрішній частині. Див. презентацію.' }
             },
-            2: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '1 шт. ≤ 0,3 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо не заважає читанню.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '• Безліч, якщо розмір ≤ 0,15 мм.\n• 2 шт. ≤ 0,4 мм.\n• 3 шт. ≤ 0,3 мм.\n• 4 шт. ≤ 0,2 мм.' }
+            6: { thread: allowMountingSet, head: allowMountingSet, slot: allowMountingSet, dowel: allowMountingSet, tape: allowMountingSet, anchor: allowMountingSet, brass: allowMountingSet },
+            7: {
+                thread: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається тільки для комплектуючих, які використовують при формуванні монтажного комплекту.' },
+                head: notAllowed, slot: notAllowed, dowel: notApplicable, tape: notApplicable,
+                anchor: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається з внутрішньої частини.' },
+                brass: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається з внутрішньої частини.' }
             },
-            3: {
-                barcode: notAllowedObj,
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо не заважає читанню.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '• 1 шт. ≤ 0,4 мм.\n• 2 шт. ≤ 0,3 мм.\n• 4 шт. ≤ 0,2 мм.' }
+            9: { thread: notAllowed, head: notApplicable, slot: notApplicable, dowel: notApplicable, tape: notApplicable, anchor: notAllowed, brass: notAllowed },
+            10: { thread: allowUnlimited, head: allowUnlimited, slot: allowUnlimited, dowel: notApplicable, tape: notApplicable, anchor: allowUnlimited, brass: allowUnlimited },
+            11: { thread: notAllowed, head: notApplicable, slot: notApplicable, dowel: notApplicable, tape: notApplicable, anchor: notAllowed, brass: notAllowed },
+            12: { thread: allowUnlimited, head: allowUnlimited, slot: allowUnlimited, dowel: notApplicable, tape: notApplicable, anchor: allowUnlimited, brass: allowUnlimited },
+            100: {
+                thread: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається не обмежено за відсутності впливу на монтаж.' },
+                head: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається не обмежено (за відсутності відшарувань для метизів з покриттям).' },
+                slot: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається у внутрішній частині. Див. презентацію.' },
+                dowel: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається не обмежено за відсутності впливу на монтаж.' },
+                tape: notApplicable,
+                anchor: allowUnlimited,
+                brass: allowUnlimited
             },
-            4: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            5: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            6: {
-                barcode: notAllowedObj,
-                text: notAllowedObj,
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо не переходить до іншої зони.' }
-            },
-            7: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            8: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            9: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо від краю є відстань ≤ 0,5 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо від краю є відстань ≤ 0,5 мм.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо від краю є відстань ≤ 0,5 мм.' }
-            },
-            10: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            11: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            12: { barcode: notAllowedObj, text: notAllowedObj, white: notAllowedObj },
-            13: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо від зони штрих-коду є відстань ≤ 1 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо від зони штрих-коду є відстань ≤ 1 мм.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається, якщо від зони штрих-коду є відстань ≤ 1 мм.' }
-            },
-            14: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Допускається ≤ 0,5 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Допускається ≤ 0,5 мм.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Допускається ≤ 0,5 мм.' }
-            },
-            15: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '• Вертикальний: ≤ 1 мм.\n• Горизонтальний: ≤ 0,2 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '• Вертикальний: ≤ 1 мм.\n• Горизонтальний: ≤ 0,2 мм.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: '• Вертикальний: ≤ 1 мм.\n• Горизонтальний: ≤ 0,2 мм.' }
-            },
-            16: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: '• Якщо у вигляді горизонтальної лінії: Допускається, якщо товщина ліній ≤ 0,2 мм.\n• Якщо у вигляді крапки: Допускається 1 шт. ≤ 0,5 мм.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: '• Якщо у вигляді горизонтальної лінії: Допускається, якщо товщина ліній ≤ 0,2 мм.\n• Якщо у вигляді крапки: Допускається 1 шт. ≤ 0,5 мм.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: '• Якщо у вигляді горизонтальної лінії: Допускається, якщо товщина ліній ≤ 0,2 мм.\n• Якщо у вигляді крапки: Допускається 1 шт. ≤ 0,5 мм.' }
-            },
-            17: {
-                barcode: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Сірий відтінок матеріалу допускається.' },
-                text: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Сірий відтінок матеріалу допускається.' },
-                white: { status: 'good', title: 'ДОПУСКАЄТЬСЯ', desc: 'Сірий відтінок матеріалу допускається.' }
+            13: { thread: notApplicable, head: notApplicable, slot: notApplicable, dowel: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається за відсутності впливу на монтаж.' }, tape: notApplicable, anchor: notApplicable, brass: notApplicable },
+            14: { thread: notApplicable, head: notApplicable, slot: notApplicable, dowel: notApplicable, tape: allowUnlimited, anchor: notApplicable, brass: notApplicable },
+            15: { thread: notApplicable, head: notApplicable, slot: notApplicable, dowel: { status: 'good', title: 'ДОПУСКАЄТЬСЯ З УМОВОЮ', desc: 'Допускається ≤ 0.5 мм.' }, tape: notApplicable, anchor: notApplicable, brass: notApplicable },
+            16: { thread: notApplicable, head: notApplicable, slot: { status: 'bad', title: 'ДИВ. ПРЕЗЕНТАЦІЮ / НЕ ДОПУСКАЄТЬСЯ', desc: 'Пошкоджений шліц метизу — див. деталі в презентації.' }, dowel: notApplicable, tape: notApplicable, anchor: notApplicable, brass: notApplicable },
+            200: {
+                thread: notApplicable,
+                head: { status: 'bad', title: 'НЕ ДОПУСКАЄТЬСЯ', desc: 'Не допускається на одному девайсі.' },
+                slot: { status: 'bad', title: 'НЕ ДОПУСКАЄТЬСЯ', desc: 'Не допускається на одному девайсі.' },
+                dowel: notApplicable, tape: notApplicable, anchor: notApplicable, brass: notApplicable
             }
         };
 
@@ -218,23 +223,18 @@
             const res = db[id]?.[selectedZone];
             const card = document.getElementById('result-card');
 
-            if (!res) {
-                card.innerHTML = `
-                    <div class="bg-gray-700 text-white p-4 rounded-2xl shadow-lg">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-xl">ℹ️</span>
-                            <h2 class="font-bold text-sm uppercase">Інформація відсутня</h2>
-                        </div>
-                        <p class="text-xs opacity-80 border-t border-white/20 pt-1 mt-0.5">Опис цього дефекту для даної зони відсутній у базі.</p>
-                    </div>
-                `;
-                card.classList.remove('hidden');
-                return;
-            }
+            if (!res) return;
 
-            const isBad = res.status === 'bad';
-            const bgColor = isBad ? 'bg-red-500' : 'bg-emerald-600';
-            const icon = isBad ? '⛔' : '✅';
+            let bgColor = 'bg-emerald-600';
+            let icon = '✅';
+
+            if (res.status === 'bad') {
+                bgColor = 'bg-red-500';
+                icon = '⛔';
+            } else if (res.status === 'none') {
+                bgColor = 'bg-gray-500';
+                icon = '⚙️';
+            }
 
             card.innerHTML = `
                 <div class="${bgColor} text-white p-4 rounded-2xl shadow-lg">
@@ -247,16 +247,6 @@
             `;
             card.classList.remove('hidden');
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        function resetAll() {
-            selectedZone = null;
-            document.querySelectorAll('.zone-btn').forEach(b => {
-                b.classList.remove('border-black', 'bg-gray-900', 'text-white');
-                b.classList.add('border-gray-300', 'bg-white', 'text-gray-800');
-            });
-            document.getElementById('step-defects').classList.add('opacity-40', 'pointer-events-none');
-            document.getElementById('result-card').classList.add('hidden');
         }
     </script>
 </body>
